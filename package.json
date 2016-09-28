@@ -8,10 +8,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "react",
+    "android"
   ],
-  "author": "",
-  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:shahen94/react-native-shape-image-view.git"
+  },
+  "author": "Shahen Hovhannisyan <shahen.hovhannisyan.94@gmail.com>",
+  "license": "MIT",
   "peerDependencies": {
     "react-native": "^0.29.0"
   }
