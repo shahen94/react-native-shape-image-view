@@ -1,6 +1,3 @@
+import HexagonImage from './src/hexagon';
 
-import { NativeModules } from 'react-native';
-
-const { RNShapeImageView } = NativeModules;
-
-export default RNShapeImageView;
+export default HexagonImage;
