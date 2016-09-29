@@ -11,6 +11,7 @@
     "react",
     "android"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:shahen94/react-native-shape-image-view.git"

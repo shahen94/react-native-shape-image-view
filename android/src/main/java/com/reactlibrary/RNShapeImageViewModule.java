@@ -1,28 +1,15 @@
 
 package com.reactlibrary;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.github.siyamed.shapeimageview.HexagonImageView;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.Key;
 
 public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> {
 
@@ -43,20 +30,8 @@ public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> 
 
   @ReactProp(name="src")
   public void setSource(final HexagonImageView view, final String src) {
-    Log.d(LOG_KEY, src);
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          URL url = new URL(src);
-          Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-          view.setImageBitmap(bmp);
-          view.invalidate();
-        } catch (Exception e) {
-          Log.d(LOG_KEY, e.toString());
-        }
-      }
-    });
+      Log.d(LOG_KEY, src);
+    new DownloadImageTask(view).execute(src);
   }
 
   @ReactProp(name="backgroundColor")
