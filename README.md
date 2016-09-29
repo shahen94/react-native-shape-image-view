@@ -44,8 +44,20 @@
 
 ## Usage
 ```javascript
-import RNShapeImageView from 'react-native-shape-image-view';
+import React, { PropTypes } from 'react';
+import { HexagonImage } from 'react-native-shape-image-view';
 
-// TODO: What do with the module?
-RNShapeImageView;
+export const Example = () => (
+  <HexagonImage
+    borderWidth={5}
+    borderColor={'red'}
+    backgroundColor={'blue'}
+    src={require('./something.png')} // or { uri: 'https://.....' }
+    style={{
+      width: 200,
+      height: 200
+    }}
+    onLoad={() => console.log('hexagon image loaded')}
+  />
+);
 ```
