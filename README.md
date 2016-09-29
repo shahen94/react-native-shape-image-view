@@ -1,6 +1,3 @@
-# IT'S NOT A READY YET
-
-
 # react-native-shape-image-view
 
 ## Getting started
