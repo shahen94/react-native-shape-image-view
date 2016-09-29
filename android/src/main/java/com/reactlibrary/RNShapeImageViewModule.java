@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -13,8 +15,12 @@ import com.github.siyamed.shapeimageview.HexagonImageView;
 
 public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> {
 
-  private ReactContext reactContext = null;
+  private ReactContext reactContext;
   private final String LOG_KEY = "HEXAGON_IMAGE_VIEW";
+
+  public RNShapeImageViewModule(ReactContext context) {
+    this.reactContext = context;
+  }
 
   @Override
   public String getName() {
@@ -23,15 +29,13 @@ public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> 
 
   @Override
   protected HexagonImageView createViewInstance(ThemedReactContext reactContext) {
-    this.reactContext = reactContext;
-    HexagonImageView imageView = new HexagonImageView(reactContext);
-    return imageView;
+    return new HexagonImageView(reactContext);
   }
 
   @ReactProp(name="src")
   public void setSource(final HexagonImageView view, final String src) {
-      Log.d(LOG_KEY, src);
-    new DownloadImageTask(view).execute(src);
+    Log.d(LOG_KEY, src);
+    new DownloadImageTask(view, reactContext).execute(src);
   }
 
   @ReactProp(name="backgroundColor")
@@ -45,7 +49,7 @@ public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> 
     view.setBackgroundColor(parsedColor);
   }
 
-  @ReactProp(name="borderWidth")
+  @ReactProp(name="borderWidth", defaultInt = 0)
   public void setBorderWidth(HexagonImageView view, int width) {
     Log.d(LOG_KEY, String.valueOf(width));
     view.setBorderWidth(width);

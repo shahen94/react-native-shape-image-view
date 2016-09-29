@@ -1,10 +1,18 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Image, requireNativeComponent } from 'react-native';
+import {
+  View,
+  Image,
+  requireNativeComponent,
+  DeviceEventEmitter
+} from 'react-native';
 import resolveAssetSource from 'resolveAssetSource';
 
+const LOADED_EVENT = "RNShapeImageView:Loaded";
+const emptyFunction = () => {};
 
 export class HexagonImage extends Component {
   static propTypes = {
+    onLoad: PropTypes.func,
     setDefaultSize: PropTypes.bool,
     src: PropTypes.oneOfType([
       PropTypes.string,
@@ -17,15 +25,25 @@ export class HexagonImage extends Component {
   }
 
   static defaultProps = {
-    setDefaultSize: false
+    setDefaultSize: false,
+    onLoad: emptyFunction,
   }
 
   constructor(props, context) {
     super(props, context);
+
+    this.onLoadListener = null;
   }
 
   componentWillMount() {
     const { src } = this.props;
+    this.onLoadListener = DeviceEventEmitter
+      .addListener(LOADED_EVENT, this.props.onLoad);
+  }
+
+  componentWillUnmount() {
+    this.onLoadListener.remove();
+    this.onLoadListener = null;
   }
 
   render() {
@@ -35,6 +53,7 @@ export class HexagonImage extends Component {
       borderWidth,
       borderColor,
       setDefaultSize,
+      onLoad,
       ...props
     } = this.props;
     const source = resolveAssetSource(src);
@@ -48,11 +67,10 @@ export class HexagonImage extends Component {
       defaultProps.width = source.width;
     }
 
-    console.log(source, typeof src);
-
     return (
       <NativeRNShapeImageView
         src={source.uri}
+        onLoad={onLoad}
         borderWidth={borderWidth}
         borderColor={borderColor}
         {...props}
