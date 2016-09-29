@@ -5,14 +5,19 @@ import resolveAssetSource from 'resolveAssetSource';
 
 export class HexagonImage extends Component {
   static propTypes = {
+    setDefaultSize: PropTypes.bool,
     src: PropTypes.oneOfType([
+      PropTypes.string,
       PropTypes.object,
       PropTypes.number,
-      PropTypes.string
     ]).isRequired,
     borderWidth: PropTypes.number,
     borderColor: PropTypes.string,
     ...Image.propTypes
+  }
+
+  static defaultProps = {
+    setDefaultSize: false
   }
 
   constructor(props, context) {
@@ -29,21 +34,29 @@ export class HexagonImage extends Component {
       src,
       borderWidth,
       borderColor,
+      setDefaultSize,
       ...props
     } = this.props;
     const source = resolveAssetSource(src);
-    console.log(source);
+    const defaultProps = {};
     if (!source.uri) {
       console.warn('Wrong source value');
     }
+
+    if (setDefaultSize) {
+      defaultProps.height = source.height;
+      defaultProps.width = source.width;
+    }
+
+    console.log(source, typeof src);
+
     return (
       <NativeRNShapeImageView
         src={source.uri}
-        width={source.width}
-        height={source.height}
         borderWidth={borderWidth}
         borderColor={borderColor}
         {...props}
+        {...defaultProps}
       >
         {children}
       </NativeRNShapeImageView>
