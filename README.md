@@ -53,9 +53,9 @@ export const Example = () => (
     borderColor={'red'}
     backgroundColor={'blue'}
     src={require('./something.png')} // or { uri: 'https://.....' }
+    setDefaultSize={true} // set image default width and height, it's works only with local assets
     style={{
-      width: 200,
-      height: 200
+      // some styles here
     }}
     onLoad={() => console.log('hexagon image loaded')}
   />
