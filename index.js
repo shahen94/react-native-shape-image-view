@@ -1,21 +1,32 @@
 import React, { PropTypes } from 'react';
 import { View, Image, requireNativeComponent } from 'react-native';
 
-const HexagonImage = ({ src, style, ...props }) => (
+const HexagonImage = ({
+  src,
+  borderWidth,
+  borderColor,
+  accessibilityLabel,
+  children
+}) => (
   <NativeRNShapeImageView
     src={src}
-    style={style}
-    {...props}
-  />
+    borderWidth={borderWidth}
+    borderColor={borderColor}
+    accessibilityLabel={accessibilityLabel}
+    testID={'hexagonImageView'}
+  >
+    {children}
+  </NativeRNShapeImageView>
 );
 
 HexagonImage.propTypes = {
   src: PropTypes.string.isRequired,
-  style: Image.propTypes.style,
-  props: PropTypes.array
+  borderWidth: PropTypes.number,
+  borderColor: PropTypes.string,
+  ...Image.propTypes
 };
 
-const NativeRNShapeImageView = requireNativeComponent('BlurView', BlurView);
+const NativeRNShapeImageView = requireNativeComponent('RNShapeImageView', HexagonImage);
 
 export {
   HexagonImage
