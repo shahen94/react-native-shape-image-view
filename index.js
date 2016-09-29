@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Image, requireNativeComponent } from 'react-native';
+import resolveAssetSource from 'resolveAssetSource';
 
 
 export class HexagonImage extends Component {
@@ -20,7 +21,6 @@ export class HexagonImage extends Component {
 
   componentWillMount() {
     const { src } = this.props;
-    console.log(src);
   }
 
   render() {
@@ -31,9 +31,16 @@ export class HexagonImage extends Component {
       borderColor,
       ...props
     } = this.props;
+    const source = resolveAssetSource(src);
+    console.log(source);
+    if (!source.uri) {
+      console.warn('Wrong source value');
+    }
     return (
       <NativeRNShapeImageView
-        src={src}
+        src={source.uri}
+        width={source.width}
+        height={source.height}
         borderWidth={borderWidth}
         borderColor={borderColor}
         {...props}
