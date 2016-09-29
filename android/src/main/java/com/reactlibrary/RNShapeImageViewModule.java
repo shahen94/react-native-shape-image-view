@@ -33,12 +33,16 @@ public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> 
 
   @ReactProp(name="src")
   public void setSource(HexagonImageView view, String src) {
-    view.setImageURI(Uri.parse(src));
     Log.d("HEXAGON_IMAGE_VIEW", src);
+    view.setImageURI(Uri.parse(src));
   }
 
   @ReactProp(name="backgroundColor")
-  public void setBackgroundColor(HexagonImageView view, String color) {
+  public void setBackgroundColor(HexagonImageView view, @Nullable String color) {
+    if (color == null) {
+      view.setBackgroundColor(Color.TRANSPARENT);
+      return;
+    }
     int parsedColor = Color.parseColor(color);
     view.setBackgroundColor(parsedColor);
   }
@@ -49,7 +53,11 @@ public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> 
   }
 
   @ReactProp(name="borderColor")
-  public void setBorderColor(HexagonImageView view, String color) {
+  public void setBorderColor(HexagonImageView view, @Nullable String color) {
+    if (color == null) {
+      view.setBorderColor(Color.TRANSPARENT);
+      return;
+    }
     int parsedColor = Color.parseColor(color);
     view.setBorderColor(parsedColor);
   }
