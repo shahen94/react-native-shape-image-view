@@ -1,6 +1,6 @@
 {
   "name": "react-native-shape-image-view",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,6 @@
     "url": "git@github.com:shahen94/react-native-shape-image-view.git"
   },
   "author": "Shahen Hovhannisyan <shahen.hovhannisyan.94@gmail.com>",
-  "license": "MIT",
   "peerDependencies": {
     "react-native": "^0.29.0"
   }
