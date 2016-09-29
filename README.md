@@ -1,3 +1,5 @@
+# IT'S NOT A READY YET
+
 
 # react-native-shape-image-view
 
@@ -50,4 +52,3 @@ import RNShapeImageView from 'react-native-shape-image-view';
 // TODO: What do with the module?
 RNShapeImageView;
 ```
-  
