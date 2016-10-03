@@ -3,11 +3,8 @@ package com.reactlibrary;
 
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -34,36 +31,41 @@ public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> 
 
   @ReactProp(name="src")
   public void setSource(final HexagonImageView view, final String src) {
-    Log.d(LOG_KEY, src);
+//    Log.d(LOG_KEY, src);
     new DownloadImageTask(view, reactContext).execute(src);
+  }
+
+  private int getColorFromString(String color) {
+    if (color == null) {
+      return Color.TRANSPARENT;
+    }
+    if (color.startsWith("rgb")) {
+      String[] colors = color.substring(4, color.length() - 1).split(",");
+      String hex = String.format("#%02x%02x%02x",
+              Integer.valueOf(colors[0].trim()),
+              Integer.valueOf(colors[1].trim()),
+              Integer.valueOf(colors[2].trim())
+      );
+      return Color.parseColor(hex);
+    }
+
+
+    return Color.parseColor(color);
   }
 
   @ReactProp(name="backgroundColor")
   public void setBackgroundColor(HexagonImageView view, @Nullable String color) {
-    Log.d(LOG_KEY, color);
-    if (color == null) {
-      view.setBackgroundColor(Color.TRANSPARENT);
-      return;
-    }
-    int parsedColor = Color.parseColor(color);
-    view.setBackgroundColor(parsedColor);
+    view.setBackgroundColor(getColorFromString(color));
   }
 
   @ReactProp(name="borderWidth", defaultInt = 0)
   public void setBorderWidth(HexagonImageView view, int width) {
-    Log.d(LOG_KEY, String.valueOf(width));
     view.setBorderWidth(width);
   }
 
   @ReactProp(name="borderColor")
   public void setBorderColor(HexagonImageView view, @Nullable String color) {
-    Log.d(LOG_KEY, color);
-    if (color == null) {
-      view.setBorderColor(Color.TRANSPARENT);
-      return;
-    }
-    int parsedColor = Color.parseColor(color);
-    view.setBorderColor(parsedColor);
+    view.setBorderColor(getColorFromString(color));
   }
 
   @Override
