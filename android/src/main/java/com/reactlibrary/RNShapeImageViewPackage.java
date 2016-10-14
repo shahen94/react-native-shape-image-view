@@ -27,7 +27,8 @@ public class RNShapeImageViewPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-                new RNShapeImageViewModule(reactContext)
+                new RNShapeImageViewModule(reactContext),
+                new RNShapeViewModule(reactContext)
         );
     }
 }
