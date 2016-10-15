@@ -64,7 +64,7 @@ export const Example = () => (
 );
 ```
 
-## HexagonView (Android 4.2+, and iOS 8.4+)
+## HexagonView (Android 4.2+, iOS 8.4+)
 ```javascript
 import React, { PropTypes } from 'react';
 import { HexagonView } from 'react-native-shape-image-view';
