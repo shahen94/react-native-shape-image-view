@@ -1,5 +1,5 @@
 {
-  "name": "react-native-shapes",
+  "name": "react-native-shape-image-view",
   "version": "1.0.0",
   "description": "Native Custom Shape Images and Views for React-Native",
   "main": "index.js",
@@ -17,7 +17,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:shahen94/react-native-shapes.git"
+    "url": "git@github.com:shahen94/react-native-shape-image-view.git"
   },
   "author": "Shahen Hovhannisyan <shahen.hovhannisyan.94@gmail.com>",
   "peerDependencies": {
