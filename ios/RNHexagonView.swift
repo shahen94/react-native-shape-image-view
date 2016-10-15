@@ -1,24 +1,26 @@
 //
-//  RNShapeView.swift
+//  RNHexagonView.swift
 //
 
 import UIKit
 
-@objc(RNShapeView)
-class RNShapeView: UIView {
+@objc(RNHexagonView)
+class RNHexagonView: UIView {
   
-  private var _borderColor: UIColor = .whiteColor()
+  private var _borderColor: UIColor = .clearColor()
   private var _borderWidth: CGFloat = 0
-  private var _backgroundColor: UIColor = .whiteColor()
-  private var _borderRadius: CGFloat = 0
+  private var _backgroundColor: UIColor = .clearColor()
   private var _isHorizontal: Bool = false
   private var _size: CGFloat = 0
   
-  
+  private var backgroundLayer = CAShapeLayer()
+  private var borderLayer = CAShapeLayer()
+    
   var size: NSNumber? {
     set {
       let width = RCTConvert.CGFloat(newValue)
       self.frame = CGRect(x: 0, y: 0, width: width, height: width)
+        setupHexagonImageView(self)
     }
     get {
       return nil
@@ -28,7 +30,6 @@ class RNShapeView: UIView {
   var borderWidth: NSNumber? {
     set {
       self._borderWidth = RCTConvert.CGFloat(newValue)
-      self.layer.sublayers?.removeLast(2)
       setupHexagonImageView(self)
     }
     get {
@@ -41,7 +42,6 @@ class RNShapeView: UIView {
       if newValue != nil {
         let color = NSNumberFormatter().numberFromString(newValue! as String)
         self._borderColor = RCTConvert.UIColor(color)
-        self.layer.sublayers?.removeLast(2)
         setupHexagonImageView(self)
       }
     }
@@ -50,12 +50,11 @@ class RNShapeView: UIView {
     }
   }
   
-  var hexagonBackgroundColor: NSString? {
+  var background_Color: NSString? {
     set {
       if newValue != nil {
         let color = NSNumberFormatter().numberFromString(newValue! as String)
         self._backgroundColor = RCTConvert.UIColor(color)
-        self.layer.sublayers?.removeLast(2)
         setupHexagonImageView(self)
       }
     }
@@ -68,6 +67,7 @@ class RNShapeView: UIView {
     set {
       if let horizontal = newValue {
         self._isHorizontal = RCTConvert.BOOL(horizontal)
+        setupHexagonImageView(self)
       }
     }
     get {
@@ -85,14 +85,12 @@ class RNShapeView: UIView {
   }
   
   func setupHexagonImageView(view: UIView) {
-    print("setupHexagonImageView")
     let lineWidth = self._borderWidth
-    let cornerRadius = self._borderRadius
     let borderColor = self._borderColor
     let backgroundColor = self._backgroundColor
     let rotationOffset = self._isHorizontal ? CGFloat(M_PI) : CGFloat(M_PI / 2.0)
     
-    let path = roundedPolygonPath(view.bounds, lineWidth: lineWidth, sides: 6, cornerRadius: cornerRadius, rotationOffset: rotationOffset)
+    let path = roundedPolygonPath(view.bounds, lineWidth: lineWidth, sides: 6, cornerRadius: 0, rotationOffset: rotationOffset)
     
     let mask = CAShapeLayer()
     mask.path = path.CGPath
@@ -101,15 +99,17 @@ class RNShapeView: UIView {
     mask.fillColor = UIColor.whiteColor().CGColor
     view.layer.mask = mask
     
+    backgroundLayer.removeFromSuperlayer()
+    borderLayer.removeFromSuperlayer()
     
-    let backgroundBorder = CAShapeLayer()
+    backgroundBorder = CAShapeLayer()
     backgroundBorder.path = path.CGPath
     backgroundBorder.lineWidth = lineWidth
     backgroundBorder.strokeColor = borderColor.CGColor
     backgroundBorder.fillColor = backgroundColor.CGColor
     view.layer.addSublayer(backgroundBorder)
     
-    let border = CAShapeLayer()
+    border = CAShapeLayer()
     border.path = path.CGPath
     border.lineWidth = lineWidth
     border.strokeColor = borderColor.CGColor
