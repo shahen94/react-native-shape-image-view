@@ -43,6 +43,8 @@
 
 
 ## Usage
+
+## HexagonImage (Android only)
 ```javascript
 import React, { PropTypes } from 'react';
 import { HexagonImage } from 'react-native-shape-image-view';
@@ -59,5 +61,29 @@ export const Example = () => (
     }}
     onLoad={() => console.log('hexagon image loaded')}
   />
+);
+```
+
+## HexagonView (Android 4.2+, and iOS 8.4+)
+```javascript
+import React, { PropTypes } from 'react';
+import { HexagonView } from 'react-native-shape-image-view';
+
+export const Example = () => (
+  <HexagonView
+    isHorizontal={true /* true | false */}
+    style={{
+      height: 100,
+      width: 100,
+      borderColor: 'red',
+      borderWidth: 5
+      /* some styles here */
+    }}
+  >
+    <Image
+      source={require('./test.jpg')}
+      style={{ width: 200, height: 200 }}
+    />
+  </HexagonView>
 );
 ```
