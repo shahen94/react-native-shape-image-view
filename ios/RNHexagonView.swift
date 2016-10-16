@@ -13,14 +13,14 @@ class RNHexagonView: UIView {
   private var _isHorizontal: Bool = false
   private var _size: CGFloat = 0
   
-  private var backgroundLayer = CAShapeLayer()
   private var borderLayer = CAShapeLayer()
     
   var size: NSNumber? {
     set {
-      let width = RCTConvert.CGFloat(newValue)
-      self.frame = CGRect(x: 0, y: 0, width: width, height: width)
-        setupHexagonImageView(self)
+      let newSize = RCTConvert.CGFloat(newValue)
+      self.frame.size.width = newSize
+      self.frame.size.height = newSize
+      self.setNeedsDisplay()
     }
     get {
       return nil
@@ -30,7 +30,7 @@ class RNHexagonView: UIView {
   var borderWidth: NSNumber? {
     set {
       self._borderWidth = RCTConvert.CGFloat(newValue)
-      setupHexagonImageView(self)
+      self.setNeedsDisplay()
     }
     get {
       return nil
@@ -42,7 +42,7 @@ class RNHexagonView: UIView {
       if newValue != nil {
         let color = NSNumberFormatter().numberFromString(newValue! as String)
         self._borderColor = RCTConvert.UIColor(color)
-        setupHexagonImageView(self)
+        self.setNeedsDisplay()
       }
     }
     get {
@@ -55,7 +55,7 @@ class RNHexagonView: UIView {
       if newValue != nil {
         let color = NSNumberFormatter().numberFromString(newValue! as String)
         self._backgroundColor = RCTConvert.UIColor(color)
-        setupHexagonImageView(self)
+        self.setNeedsDisplay()
       }
     }
     get {
@@ -66,8 +66,10 @@ class RNHexagonView: UIView {
   var isHorizontal: NSNumber? {
     set {
       if let horizontal = newValue {
-        self._isHorizontal = RCTConvert.BOOL(horizontal)
-        setupHexagonImageView(self)
+        if self._isHorizontal != RCTConvert.BOOL(horizontal) {
+          self._isHorizontal = RCTConvert.BOOL(horizontal)
+          self.setNeedsDisplay()
+        }
       }
     }
     get {
@@ -75,47 +77,39 @@ class RNHexagonView: UIView {
     }
   }
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    setupHexagonImageView(self)
+  override func drawRect(rect: CGRect) {
+    super.drawRect(rect)
+    setupHexagonView(self)
   }
   
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.backgroundColor = self._backgroundColor
+    setupHexagonView(self)
   }
   
-  func setupHexagonImageView(view: UIView) {
+  func setupHexagonView(view: UIView) {
     let lineWidth = self._borderWidth
     let borderColor = self._borderColor
-    let backgroundColor = self._backgroundColor
     let rotationOffset = self._isHorizontal ? CGFloat(M_PI) : CGFloat(M_PI / 2.0)
     
     let path = roundedPolygonPath(view.bounds, lineWidth: lineWidth, sides: 6, cornerRadius: 0, rotationOffset: rotationOffset)
     
     let mask = CAShapeLayer()
     mask.path = path.CGPath
-    mask.lineWidth = lineWidth
-    mask.strokeColor = UIColor.clearColor().CGColor
     mask.fillColor = UIColor.whiteColor().CGColor
-    view.layer.mask = mask
+    (self.layer as! CAShapeLayer).mask = mask
     
-    backgroundLayer.removeFromSuperlayer()
     borderLayer.removeFromSuperlayer()
     
-    backgroundLayer = CAShapeLayer()
-    backgroundLayer.path = path.CGPath
-    backgroundLayer.lineWidth = lineWidth
-    backgroundLayer.strokeColor = borderColor.CGColor
-    backgroundLayer.fillColor = backgroundColor.CGColor
-    view.layer.addSublayer(backgroundLayer)
+    (self.layer as! CAShapeLayer).path = path.CGPath
+    (self.layer as! CAShapeLayer).fillColor = nil
     
-    borderLayer = CAShapeLayer()
     borderLayer.path = path.CGPath
     borderLayer.lineWidth = lineWidth
     borderLayer.strokeColor = borderColor.CGColor
-    borderLayer.fillColor = UIColor.clearColor().CGColor
-    borderLayer.zPosition = 1
-    view.layer.addSublayer(borderLayer)
+    borderLayer.fillColor = nil
+    (self.layer as! CAShapeLayer).addSublayer(borderLayer)
   }
   
   func roundedPolygonPath(rect: CGRect, lineWidth: CGFloat, sides: NSInteger, cornerRadius: CGFloat, rotationOffset: CGFloat = 0)
@@ -160,6 +154,10 @@ class RNHexagonView: UIView {
       path.applyTransform(transform)
       
       return path
+  }
+  
+  override class func layerClass() -> AnyClass {
+    return CAShapeLayer.self
   }
 }
 
