@@ -102,20 +102,20 @@ class RNHexagonView: UIView {
     backgroundLayer.removeFromSuperlayer()
     borderLayer.removeFromSuperlayer()
     
-    backgroundBorder = CAShapeLayer()
-    backgroundBorder.path = path.CGPath
-    backgroundBorder.lineWidth = lineWidth
-    backgroundBorder.strokeColor = borderColor.CGColor
-    backgroundBorder.fillColor = backgroundColor.CGColor
-    view.layer.addSublayer(backgroundBorder)
+    backgroundLayer = CAShapeLayer()
+    backgroundLayer.path = path.CGPath
+    backgroundLayer.lineWidth = lineWidth
+    backgroundLayer.strokeColor = borderColor.CGColor
+    backgroundLayer.fillColor = backgroundColor.CGColor
+    view.layer.addSublayer(backgroundLayer)
     
-    border = CAShapeLayer()
-    border.path = path.CGPath
-    border.lineWidth = lineWidth
-    border.strokeColor = borderColor.CGColor
-    border.fillColor = UIColor.clearColor().CGColor
-    border.zPosition = 1
-    view.layer.addSublayer(border)
+    borderLayer = CAShapeLayer()
+    borderLayer.path = path.CGPath
+    borderLayer.lineWidth = lineWidth
+    borderLayer.strokeColor = borderColor.CGColor
+    borderLayer.fillColor = UIColor.clearColor().CGColor
+    borderLayer.zPosition = 1
+    view.layer.addSublayer(borderLayer)
   }
   
   func roundedPolygonPath(rect: CGRect, lineWidth: CGFloat, sides: NSInteger, cornerRadius: CGFloat, rotationOffset: CGFloat = 0)
