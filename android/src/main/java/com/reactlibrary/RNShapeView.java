@@ -16,10 +16,6 @@ public class RNShapeView extends ViewGroup {
     private Path hexagonBorderPath;
     private Paint mBorderPaint;
 
-    private boolean isHorizontal;
-    private int widthMeasureSpec;
-    private int heightMeasureSpec;
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
@@ -27,16 +23,7 @@ public class RNShapeView extends ViewGroup {
 
     public RNShapeView(Context context) {
         super(context);
-        this.isHorizontal = false;
         init();
-    }
-
-    public void setIsHorizontal(Boolean isHorizontal) {
-        Log.d("LOG_KEY", "set horizontal" + String.valueOf(isHorizontal));
-        init();
-        this.isHorizontal = isHorizontal;
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
     }
 
     public RNShapeView(Context context, AttributeSet attrs) {
@@ -133,9 +120,6 @@ public class RNShapeView extends ViewGroup {
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        this.widthMeasureSpec = widthMeasureSpec;
-        this.heightMeasureSpec = heightMeasureSpec;
 
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
