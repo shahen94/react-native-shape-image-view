@@ -10,18 +10,18 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.github.siyamed.shapeimageview.HexagonImageView;
 
-public class RNShapeImageViewModule extends SimpleViewManager<HexagonImageView> {
+public class RNHexagonImageViewModule extends SimpleViewManager<HexagonImageView> {
 
   private ReactContext reactContext;
   private final String LOG_KEY = "HEXAGON_IMAGE_VIEW";
 
-  public RNShapeImageViewModule(ReactContext context) {
+  public RNHexagonImageViewModule(ReactContext context) {
     this.reactContext = context;
   }
 
   @Override
   public String getName() {
-    return "RNShapeImageView";
+    return "RNHexagonImageView";
   }
 
   @Override
