@@ -15,6 +15,8 @@ public class RNShapeView extends ViewGroup {
     private Path hexagonPath;
     private Path hexagonBorderPath;
     private Paint mBorderPaint;
+    private Integer strokeWidth = 0;
+    private int strokeColor = Color.WHITE;
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -42,9 +44,9 @@ public class RNShapeView extends ViewGroup {
         this.hexagonBorderPath = new Path();
 
         this.mBorderPaint = new Paint();
-        this.mBorderPaint.setColor(Color.WHITE);
+        this.mBorderPaint.setColor(this.strokeColor);
         this.mBorderPaint.setStrokeCap(Paint.Cap.ROUND);
-        this.mBorderPaint.setStrokeWidth(5f);
+        this.mBorderPaint.setStrokeWidth(this.strokeWidth);
         this.mBorderPaint.setStyle(Paint.Style.STROKE);
     }
 
@@ -64,7 +66,7 @@ public class RNShapeView extends ViewGroup {
         this.hexagonPath.close();
 
 
-        float radiusBorder = radius - 5f;
+        float radiusBorder = radius + (float) this.strokeWidth;
         float halfRadiusBorder = radiusBorder / 2f;
         float triangleBorderHeight = (float) (Math.sqrt(3.0) * halfRadiusBorder);
 
@@ -126,5 +128,15 @@ public class RNShapeView extends ViewGroup {
 
         setMeasuredDimension(width, height);
         calculatePath(Math.min(width / 2f, height / 2f) - 20f);
+    }
+
+    public void setStrokeWidth(Integer strokeWidth) {
+        this.strokeWidth = strokeWidth;
+        init();
+    }
+
+    public void setStrokeColor(Integer strokeColor) {
+        this.strokeColor = strokeColor;
+        init();
     }
 }
