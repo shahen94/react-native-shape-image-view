@@ -4,17 +4,17 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 
-public class RNShapeImageViewModule extends ViewGroupManager<RNShapeView> {
+public class RNHexagonViewModule extends ViewGroupManager<RNShapeView> {
 
     private ReactContext reactContext;
 
-    public RNShapeImageViewModule(ReactContext context) {
+    public RNHexagonViewModule(ReactContext context) {
         this.reactContext = context;
     }
 
     @Override
     public String getName() {
-        return "RNShapeView";
+        return "RNHexagonView";
     }
 
     @Override
