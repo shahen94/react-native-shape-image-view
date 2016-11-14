@@ -14,5 +14,6 @@ RCT_EXPORT_VIEW_PROPERTY(borderWidth, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(borderColor, NSString)
 RCT_EXPORT_VIEW_PROPERTY(background_Color, NSString)
 RCT_EXPORT_VIEW_PROPERTY(isHorizontal, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(cornerRadius, NSNumber)
 
 @end
