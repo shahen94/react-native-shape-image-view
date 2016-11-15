@@ -12,6 +12,7 @@ class RNHexagonView: UIView {
   private var _backgroundColor: UIColor = .clearColor()
   private var _isHorizontal: Bool = false
   private var _size: CGFloat = 0
+  private var _cornerRadius: CGFloat = 0
   
   private var borderLayer = CAShapeLayer()
     
@@ -77,6 +78,16 @@ class RNHexagonView: UIView {
     }
   }
   
+  var cornerRadius: NSNumber? {
+    set {
+      self._cornerRadius = RCTConvert.CGFloat(newValue)
+      self.setNeedsDisplay()
+    }
+    get {
+      return nil
+    }
+  }
+  
   override func drawRect(rect: CGRect) {
     super.drawRect(rect)
     setupHexagonView(self)
@@ -92,8 +103,9 @@ class RNHexagonView: UIView {
     let lineWidth = self._borderWidth
     let borderColor = self._borderColor
     let rotationOffset = self._isHorizontal ? CGFloat(M_PI) : CGFloat(M_PI / 2.0)
+    let cornerRadius = self._cornerRadius
     
-    let path = roundedPolygonPath(view.bounds, lineWidth: lineWidth, sides: 6, cornerRadius: 0, rotationOffset: rotationOffset)
+    let path = roundedPolygonPath(view.bounds, lineWidth: lineWidth, sides: 6, cornerRadius: cornerRadius, rotationOffset: rotationOffset)
     
     let mask = CAShapeLayer()
     mask.path = path.CGPath
