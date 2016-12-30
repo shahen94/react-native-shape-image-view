@@ -20,6 +20,9 @@
     "url": "git@github.com:shahen94/react-native-shape-image-view.git"
   },
   "author": "Shahen Hovhannisyan <shahen.hovhannisyan.94@gmail.com>",
+  "dependencies": {
+    "lodash": "latest"
+  },
   "peerDependencies": {
     "react-native": ">=0.29"
   }
