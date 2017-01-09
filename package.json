@@ -1,6 +1,6 @@
 {
   "name": "react-native-shape-image-view",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Native Custom Shape Images and Views for React-Native",
   "main": "index.js",
   "scripts": {
