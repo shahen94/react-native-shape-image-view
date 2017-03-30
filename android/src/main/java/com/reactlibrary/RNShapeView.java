@@ -148,7 +148,7 @@ public class RNShapeView extends ViewGroup {
         init();
     }
 
-    public void setCornerRadius(Integer cornerRadius) {
+    public void setCornerRadius(Float cornerRadius) {
         if (this.cornerRadius != cornerRadius) {
             this.cornerRadius = cornerRadius;
             init();
