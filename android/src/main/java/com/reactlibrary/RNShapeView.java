@@ -17,7 +17,7 @@ public class RNShapeView extends ViewGroup {
     private Path hexagonBorderPath;
     private Paint mBorderPaint;
     private Integer strokeWidth = 0;
-    private Integer cornerRadius = 0;
+    private Float cornerRadius = 0.0f;
     private int strokeColor = Color.WHITE;
 
     @Override
