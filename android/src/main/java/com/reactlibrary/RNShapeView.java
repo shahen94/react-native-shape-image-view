@@ -3,6 +3,7 @@ package com.reactlibrary;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -16,6 +17,7 @@ public class RNShapeView extends ViewGroup {
     private Path hexagonBorderPath;
     private Paint mBorderPaint;
     private Integer strokeWidth = 0;
+    private Integer cornerRadius = 0;
     private int strokeColor = Color.WHITE;
 
     @Override
@@ -45,9 +47,13 @@ public class RNShapeView extends ViewGroup {
 
         this.mBorderPaint = new Paint();
         this.mBorderPaint.setColor(this.strokeColor);
+        this.mBorderPaint.setStrokeJoin(Paint.Join.ROUND);
         this.mBorderPaint.setStrokeCap(Paint.Cap.ROUND);
         this.mBorderPaint.setStrokeWidth(this.strokeWidth);
         this.mBorderPaint.setStyle(Paint.Style.STROKE);
+
+        CornerPathEffect corEffect = new CornerPathEffect(this.cornerRadius);
+        this.mBorderPaint.setPathEffect(corEffect);
     }
 
     private void calculatePath(float radius) {
@@ -131,12 +137,21 @@ public class RNShapeView extends ViewGroup {
     }
 
     public void setStrokeWidth(Integer strokeWidth) {
-        this.strokeWidth = strokeWidth;
-        init();
+        if (this.strokeWidth != strokeWidth) {
+            this.strokeWidth = strokeWidth;
+            init();
+        }
     }
 
     public void setStrokeColor(Integer strokeColor) {
         this.strokeColor = strokeColor;
         init();
+    }
+
+    public void setCornerRadius(Integer cornerRadius) {
+        if (this.cornerRadius != cornerRadius) {
+            this.cornerRadius = cornerRadius;
+            init();
+        }
     }
 }
