@@ -9,7 +9,6 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Region;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 
 public class RNShapeView extends ViewGroup {
@@ -56,23 +55,92 @@ public class RNShapeView extends ViewGroup {
         this.mBorderPaint.setPathEffect(corEffect);
     }
 
+    private float getDx(float radius) {
+        return radius * ((float) Math.cos(Math.PI / 3));
+    }
+
+    private float getDy(float radius) {
+        return radius * ((float) Math.sin(Math.PI / 3));
+    }
+
+    /*
+         2         3
+           -------
+         /         \
+        /           \
+       /             \ 4
+     1 \             /
+        \           /
+         \         /
+           -------
+         6         5
+    */
+
     private void calculatePath(float radius) {
         float halfRadius = radius / 2f;
         float triangleHeight = (float) (Math.sqrt(3.0) * halfRadius);
         float centerX = getMeasuredWidth() / 2f;
         float centerY = getMeasuredHeight() / 2f;
+        float borderRadius = this.cornerRadius < halfRadius ? this.cornerRadius : halfRadius;
+        float delta = borderRadius / 12; // approximately selected number
 
         this.hexagonPath.reset();
-        this.hexagonPath.moveTo(centerX - radius, centerY);
-        this.hexagonPath.lineTo(centerX - halfRadius, centerY - triangleHeight);
-        this.hexagonPath.lineTo(centerX + halfRadius, centerY - triangleHeight);
-        this.hexagonPath.lineTo(centerX + radius, centerY);
-        this.hexagonPath.lineTo(centerX + halfRadius, centerY + triangleHeight);
-        this.hexagonPath.lineTo(centerX - halfRadius, centerY + triangleHeight);
+
+        // 1
+        this.hexagonPath.moveTo(centerX - radius + getDx(borderRadius), centerY - getDy(borderRadius));
+
+        // 2
+        this.hexagonPath.lineTo(centerX - halfRadius - getDx(borderRadius), centerY - triangleHeight + getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX - halfRadius - getDx(borderRadius), centerY - triangleHeight + getDy(borderRadius),
+                centerX - halfRadius - delta, centerY - triangleHeight - delta,
+                centerX - halfRadius + borderRadius, centerY - triangleHeight
+        );
+
+        // 3
+        this.hexagonPath.lineTo(centerX + halfRadius - borderRadius, centerY - triangleHeight);
+        this.hexagonPath.cubicTo(
+                centerX + halfRadius - borderRadius, centerY - triangleHeight,
+                centerX + halfRadius + delta, centerY - triangleHeight - delta,
+                centerX + halfRadius + getDx(borderRadius), centerY - triangleHeight + getDy(borderRadius)
+        );
+
+        // 4
+        this.hexagonPath.lineTo(centerX + radius - getDx(borderRadius), centerY - getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX + radius - getDx(borderRadius), centerY - getDy(borderRadius),
+                centerX + radius + delta, centerY,
+                centerX + radius - getDx(borderRadius), centerY + getDy(borderRadius)
+        );
+
+        // 5
+        this.hexagonPath.lineTo(centerX + halfRadius + getDx(borderRadius), centerY + triangleHeight - getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX + halfRadius + getDx(borderRadius), centerY + triangleHeight - getDy(borderRadius),
+                centerX + halfRadius + delta, centerY + triangleHeight + delta,
+                centerX + halfRadius - borderRadius, centerY + triangleHeight
+        );
+
+        // 6
+        this.hexagonPath.lineTo(centerX - halfRadius + borderRadius, centerY + triangleHeight);
+        this.hexagonPath.cubicTo(
+                centerX - halfRadius + borderRadius, centerY + triangleHeight,
+                centerX - halfRadius - delta, centerY + triangleHeight + delta,
+                centerX - halfRadius - getDx(borderRadius), centerY + triangleHeight - getDy(borderRadius)
+        );
+
+        // 1
+        this.hexagonPath.lineTo(centerX - radius + getDx(borderRadius), centerY + getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX - radius + getDx(borderRadius), centerY + getDy(borderRadius),
+                centerX - radius - delta, centerY,
+                centerX - radius + getDx(borderRadius), centerY - getDy(borderRadius)
+        );
+
         this.hexagonPath.close();
 
 
-        float radiusBorder = radius + (float) this.strokeWidth;
+        float radiusBorder = radius + (float) this.strokeWidth / 2;
         float halfRadiusBorder = radiusBorder / 2f;
         float triangleBorderHeight = (float) (Math.sqrt(3.0) * halfRadiusBorder);
 
