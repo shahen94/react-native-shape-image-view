@@ -37,4 +37,8 @@ public class RNHexagonViewModule extends ViewGroupManager<RNShapeView> {
         view.setStrokeColor(strokeColor);
     }
 
+    @ReactProp(name="cornerRadius", defaultFloat = 0f)
+    public void setCornerRadius(RNShapeView view, float cornerRadius) {
+        view.setCornerRadius(cornerRadius);
+    }
 }

@@ -3,12 +3,12 @@ package com.reactlibrary;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Region;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 
 public class RNShapeView extends ViewGroup {
@@ -16,6 +16,7 @@ public class RNShapeView extends ViewGroup {
     private Path hexagonBorderPath;
     private Paint mBorderPaint;
     private Integer strokeWidth = 0;
+    private Float cornerRadius = 0.0f;
     private int strokeColor = Color.WHITE;
 
     @Override
@@ -45,28 +46,101 @@ public class RNShapeView extends ViewGroup {
 
         this.mBorderPaint = new Paint();
         this.mBorderPaint.setColor(this.strokeColor);
+        this.mBorderPaint.setStrokeJoin(Paint.Join.ROUND);
         this.mBorderPaint.setStrokeCap(Paint.Cap.ROUND);
         this.mBorderPaint.setStrokeWidth(this.strokeWidth);
         this.mBorderPaint.setStyle(Paint.Style.STROKE);
+
+        CornerPathEffect corEffect = new CornerPathEffect(this.cornerRadius);
+        this.mBorderPaint.setPathEffect(corEffect);
     }
+
+    private float getDx(float radius) {
+        return radius * ((float) Math.cos(Math.PI / 3));
+    }
+
+    private float getDy(float radius) {
+        return radius * ((float) Math.sin(Math.PI / 3));
+    }
+
+    /*
+         2         3
+           -------
+         /         \
+        /           \
+       /             \ 4
+     1 \             /
+        \           /
+         \         /
+           -------
+         6         5
+    */
 
     private void calculatePath(float radius) {
         float halfRadius = radius / 2f;
         float triangleHeight = (float) (Math.sqrt(3.0) * halfRadius);
         float centerX = getMeasuredWidth() / 2f;
         float centerY = getMeasuredHeight() / 2f;
+        float borderRadius = this.cornerRadius < halfRadius ? this.cornerRadius : halfRadius;
+        float delta = borderRadius / 12; // approximately selected number
 
         this.hexagonPath.reset();
-        this.hexagonPath.moveTo(centerX - radius, centerY);
-        this.hexagonPath.lineTo(centerX - halfRadius, centerY - triangleHeight);
-        this.hexagonPath.lineTo(centerX + halfRadius, centerY - triangleHeight);
-        this.hexagonPath.lineTo(centerX + radius, centerY);
-        this.hexagonPath.lineTo(centerX + halfRadius, centerY + triangleHeight);
-        this.hexagonPath.lineTo(centerX - halfRadius, centerY + triangleHeight);
+
+        // 1
+        this.hexagonPath.moveTo(centerX - radius + getDx(borderRadius), centerY - getDy(borderRadius));
+
+        // 2
+        this.hexagonPath.lineTo(centerX - halfRadius - getDx(borderRadius), centerY - triangleHeight + getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX - halfRadius - getDx(borderRadius), centerY - triangleHeight + getDy(borderRadius),
+                centerX - halfRadius - delta, centerY - triangleHeight - delta,
+                centerX - halfRadius + borderRadius, centerY - triangleHeight
+        );
+
+        // 3
+        this.hexagonPath.lineTo(centerX + halfRadius - borderRadius, centerY - triangleHeight);
+        this.hexagonPath.cubicTo(
+                centerX + halfRadius - borderRadius, centerY - triangleHeight,
+                centerX + halfRadius + delta, centerY - triangleHeight - delta,
+                centerX + halfRadius + getDx(borderRadius), centerY - triangleHeight + getDy(borderRadius)
+        );
+
+        // 4
+        this.hexagonPath.lineTo(centerX + radius - getDx(borderRadius), centerY - getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX + radius - getDx(borderRadius), centerY - getDy(borderRadius),
+                centerX + radius + delta, centerY,
+                centerX + radius - getDx(borderRadius), centerY + getDy(borderRadius)
+        );
+
+        // 5
+        this.hexagonPath.lineTo(centerX + halfRadius + getDx(borderRadius), centerY + triangleHeight - getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX + halfRadius + getDx(borderRadius), centerY + triangleHeight - getDy(borderRadius),
+                centerX + halfRadius + delta, centerY + triangleHeight + delta,
+                centerX + halfRadius - borderRadius, centerY + triangleHeight
+        );
+
+        // 6
+        this.hexagonPath.lineTo(centerX - halfRadius + borderRadius, centerY + triangleHeight);
+        this.hexagonPath.cubicTo(
+                centerX - halfRadius + borderRadius, centerY + triangleHeight,
+                centerX - halfRadius - delta, centerY + triangleHeight + delta,
+                centerX - halfRadius - getDx(borderRadius), centerY + triangleHeight - getDy(borderRadius)
+        );
+
+        // 1
+        this.hexagonPath.lineTo(centerX - radius + getDx(borderRadius), centerY + getDy(borderRadius));
+        this.hexagonPath.cubicTo(
+                centerX - radius + getDx(borderRadius), centerY + getDy(borderRadius),
+                centerX - radius - delta, centerY,
+                centerX - radius + getDx(borderRadius), centerY - getDy(borderRadius)
+        );
+
         this.hexagonPath.close();
 
 
-        float radiusBorder = radius + (float) this.strokeWidth;
+        float radiusBorder = radius + (float) this.strokeWidth / 2;
         float halfRadiusBorder = radiusBorder / 2f;
         float triangleBorderHeight = (float) (Math.sqrt(3.0) * halfRadiusBorder);
 
@@ -131,12 +205,21 @@ public class RNShapeView extends ViewGroup {
     }
 
     public void setStrokeWidth(Integer strokeWidth) {
-        this.strokeWidth = strokeWidth;
-        init();
+        if (this.strokeWidth != strokeWidth) {
+            this.strokeWidth = strokeWidth;
+            init();
+        }
     }
 
     public void setStrokeColor(Integer strokeColor) {
         this.strokeColor = strokeColor;
         init();
+    }
+
+    public void setCornerRadius(Float cornerRadius) {
+        if (this.cornerRadius != cornerRadius) {
+            this.cornerRadius = cornerRadius;
+            init();
+        }
     }
 }
