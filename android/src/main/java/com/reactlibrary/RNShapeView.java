@@ -201,7 +201,7 @@ public class RNShapeView extends ViewGroup {
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
         setMeasuredDimension(width, height);
-        calculatePath(Math.min(width / 2f, height / 2f) - 20f);
+        calculatePath(Math.max(width / 2f, height / 2f));
     }
 
     public void setStrokeWidth(Integer strokeWidth) {
