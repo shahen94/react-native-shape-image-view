@@ -21,7 +21,8 @@
   },
   "author": "Shahen Hovhannisyan <shahen.hovhannisyan.94@gmail.com>",
   "dependencies": {
-    "lodash": "latest"
+    "lodash": "latest",
+    "prop-types": "^15.6.1"
   },
   "peerDependencies": {
     "react-native": ">=0.29"
