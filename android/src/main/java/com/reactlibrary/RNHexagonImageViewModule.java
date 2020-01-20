@@ -2,7 +2,7 @@
 package com.reactlibrary;
 
 import android.graphics.Color;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.SimpleViewManager;
@@ -73,10 +73,10 @@ public class RNHexagonImageViewModule extends SimpleViewManager<HexagonImageView
     super.setAccessibilityLabel(view, accessibilityLabel);
   }
 
-  @Override
-  public void setAccessibilityComponentType(HexagonImageView view, String accessibilityComponentType) {
-    super.setAccessibilityComponentType(view, accessibilityComponentType);
-  }
+//  @Override
+//  public void setAccessibilityComponentType(HexagonImageView view, String accessibilityComponentType) {
+//    super.setAccessibilityComponentType(view, accessibilityComponentType);
+//  }
 
   @Override
   public void setTestId(HexagonImageView view, String testId) {
